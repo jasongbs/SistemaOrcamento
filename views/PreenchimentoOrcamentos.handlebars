@@ -1,0 +1,27 @@
+<h1>Formulário de Orcamentos</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Orcamentos</th>
+      <th scope="col">idFornecedor</th>
+      <th scope="col">idUsuarioSolicitante</th>
+      <th scope="col">descricao</th>
+      <th scope="col">statusOrcamento</th>
+      <th scope="col">Quantidade</th>
+      <th scope="col">Preco</th>
+    <br>
+    </tr>
+    {{#each orcamentos}}
+     <td>{{idOrcamento}}</td>
+    <td>{{idFornecedor}}</td>
+    <td>{{idProduto}}</th>
+    <td>Quantidade</th>
+    <td>Preco</th>
+    
+    <hr>
+     </tr>
+{{/each}}
+
+  </tbody>
+</table>
