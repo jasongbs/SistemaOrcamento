@@ -10,7 +10,7 @@ const Orcamento = db.sequelize.define('orcamento', {
         type: db.Sequelize.INTEGER
     },
     idUsuarioSolicitante: {
-        type: db.Sequelize.INTEGER
+        type: db.Sequelize.STRING
     },
     descricao: {
         type: db.Sequelize.STRING

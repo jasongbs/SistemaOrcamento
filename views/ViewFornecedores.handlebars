@@ -3,24 +3,15 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Orcamentos</th>
-      <th scope="col">idFornecedor</th>
-      <th scope="col">idUsuarioSolicitante</th>
-      <th scope="col">descricao</th>
-      <th scope="col">statusOrcamento</th>
-      <th scope="col">dataSolicitacao</th>
-      <th scope="col">dataLimite</th>
+      <th scope="col">CNPJ</th>
+      <th scope="col">Nome Fantasia</th>
+
     <br>
     </tr>
-    {{#each orcamentos}}
-     <td>{{idOrcamento}}</td>
-    <td>{{idFornecedor}}</td>
-    <td>{{idUsuarioSolicitante}}</th>
-    <td>{{descricao}}</th>
-    <td>{{statusOrcamento}}</th>
-    <td>{{dataSolicitacao}}</th>
-    <td>{{dataLimite}}</th>
-    <hr>
+    {{#each fornecedores}}
+    <td>{{cnpj}}</td>
+    <td>{{nomeFantasia}}</th>
+ 
      </tr>
 {{/each}}
 

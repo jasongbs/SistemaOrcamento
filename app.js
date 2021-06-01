@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = 8080;
 const handlebars = require("express-handlebars");
 const bodyParser = require("body-parser")
 const Orcamento = require("./models/Orcamento")
@@ -32,8 +33,8 @@ app.get('/Orcamentos', function(req, res){
 });
 
 app.get('/Fornecedores', function(req, res){
-    Fornecedor.findAll().then(function(orcamentos){
-    res.render('ViewFornecedores',{orcamentos: orcamentos});
+    Fornecedor.findAll().then(function(fornecedores){
+    res.render('ViewFornecedores',{fornecedores: fornecedores});
     });
 
 });
@@ -68,8 +69,27 @@ app.get('/dashboard', function(req, res){
     res.render('ViewDashboard');
 });
 
+
+app.get('/resp-Orcamento', function(req, res){
+    const { Op } = require("sequelize");
+    Orcamento.findAll({
+        where: {
+            [Op.and]:[
+                {idFornecedor: req.query.f},
+                {idOrcamento: parseInt( req.query.o)}
+            ]
+          
+          }
+        }
+    ).then(function(orcamentos){
+        res.render('ViewOrcamentos',{orcamentos: orcamentos});
+        });
+   
+});
+
+
 //Envia para cadastro orcamento
-app.post('/resp-cad-orcamento', function(req, res){
+app.post('/cad-Orcamento', function(req, res){
     Orcamento.create({
         idFornecedor: req.body.IDFornecedor,
         idUsuarioSolicitante: req.body.IDSolicitante,
@@ -79,7 +99,7 @@ app.post('/resp-cad-orcamento', function(req, res){
         dataResposta: req.body.DataRespota,
         statusOrcamento: 'aberto',
     }).then(function(){
-        res.redirect('/Orcamento')
+        res.redirect('/Orcamentos')
         //res.send("Orcamento cadastro com sucesso!")
     }).catch(function(erro){
         res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
@@ -120,4 +140,6 @@ app.post('/cad-Fornecedor', function(req, res){
 
 
 
-app.listen(8080);
+app.listen(port);
+
+console.log("Serviço executado, disponivel em ",port);

@@ -10,6 +10,6 @@ const Fornecedor = db.sequelize.define('Fornecedor', {
 })
 
 //Criar a tabela
-Fornecedor.sync({force: true})
+//Fornecedor.sync({force: true})
 
 module.exports = Fornecedor
