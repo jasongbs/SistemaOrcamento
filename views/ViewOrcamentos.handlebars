@@ -1,31 +1,121 @@
-<h1>Formulário de Orcamentos</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Orcamento</th>
-      <th scope="col">Fornecedor</th>
-      <th scope="col">Solicitante</th>
-      <th scope="col">descricao</th>
-      <th scope="col">Status</th>
-      <th scope="col">Data Solicitação</th>
-      <th scope="col">Data Limite</th>
-    <br>
-    </tr>
+<style>
+  H1 {
+    margin-left: 5%;
+  }
+
+  #form {
+    padding: 30px;
+  }
+
+  #addItem {
+    margin-right: 0;
+  }
+
+  #cadastrar {
+    position: absolute;
+
+    right: 5%;
+  }
+</style>
+
+
+<script>
+
+  function updateClickedDesc() {
+    var select = document.getElementById('descForn');
+    var option = [select.selectedIndex];
+    console.log(option);
+    document.getElementById('IDFornecedor').value = option;//option.value;
+    $('#cnpjForn').val(option);
+  }
+
+  function updateClickedCnpj() {
+    var select = document.getElementById('cnpjForn');
+    var option = [select.selectedIndex];
+    console.log(option);
+    document.getElementById('IDFornecedor').value = option;//option.value;
+    $('#descForn').val(option);
+  }
+
+  $(document).ready(function () {
+
+    /* $('#IDFornecedor').on('change', function() {
+    });*/
+
+
+
+  });
+</script>
+
+<h1>Preenchimento de Orçamento</h1>
+
+
+<form id='form' action="/cad-Orcamento" method="POST">
+  <div class="form-row">
+    <div class="col-md-2 mb-3">
+      <label>Código Fornecedor</label>
+      <input type="number" class="form-control" id="IDFornecedor" value="{{dados.forn.id}}" name="IDFornecedor" disabled>
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="validationCustom02">CNPJ Fornecedor</label>
+     <input type="text" min="1" class="form-control" name="ItemQuantidade" value="{{dados.forn.cnpj}}" id="quantidade" disabled>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom02">Nome Fornecedor</label>
+      <input type="text" min="1" class="form-control" name="ItemQuantidade" value="{{dados.forn.nomeFantasia}}" id="quantidade" disabled>
+    </div>
+    <div class="col-md-2 mb-1">
+      <label for="validationCustom02">Data Solicitação</label>
+      <input type="text" min="1" class="form-control" name="ItemQuantidade" value="{{dados.orc.dataSolicitacao}}" id="quantidade" disabled>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="validationCustom03">Descrição do Orçamento </label>
+      <input type="text" class="form-control" name="Descricao" value="{{dados.orc.descricao}}" placeholder="Descrição do orçamento" disabled>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="validationCustom04">Solicitante</label>
+      <input type="text" class="form-control" name="IDSolicitante"  value="{{dados.orc.idUsuarioSolicitante}}" placeholder="Solicitante" disabled>
+
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="validationCustom05">Data Fechamento</label>
+      <input type="date" class="form-control" value="{{dados.orc.dataLimite}}" name="DataLimite" disabled>
+
+    </div>
+  </div>
+
+
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+         <th scope="col">ID</th>
+        <th scope="col">Produto</th>
+        <th scope="col">Quantidade</th>
+        <th scope="col">Valor</th>
+        <br>
+      </tr>
     </thead>
-     <tbody id="data">
-    {{#each orcamentos}}
-    
-     <td>{{idOrcamento}}</td>
-    <td>{{idFornecedor}}</td>
-    <td>{{idUsuarioSolicitante}}</th>
-    <td>{{descricao}}</th>
-    <td>{{statusOrcamento}}</th>
-    <td>{{dataSolicitacao}}</th>
-    <td>{{dataLimite}}</th>
+    <tbody id="tbProdutos">
+         {{#each dados.itensOrc}}
+       <td><input type="text" min="1" class="form-control" value="{{dados.itensOrc}}" name="ItemQuantidade" id="quantidade" disabled></td>
+      <td><input type="text" min="1" class="form-control" value="{{dados.itensOrc.descricao}}" name="ItemQuantidade" id="quantidade" disabled></td>
+       <td><input type="text" min="1" class="form-control" value="{{dados.itensOrc.qtdProduto}}" name="ItemQuantidade" id="quantidade" disabled></td>
+       <td><input type="number" min="1" class="form-control" name="ItemQuantidade" id="quantidade" required></td>
+      
+      <td> </td>
+       </tr>
+    {{/each}}
+    </tbody>
 
-     </tr>
-{{/each}}
+  </table>
 
-  </tbody>
-</table>
+  <br>
+  <hr>
+  <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+  </div>
+</form>

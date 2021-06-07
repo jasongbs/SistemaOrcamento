@@ -1,14 +1,68 @@
-<h1>Formulário para cadatrar Produtos</h1>
-<form action="/cad-Fornecedor" method="POST">
-    
-    <label>CNPJ</label>
-    <input type="text" name="Cnpj"><br><br>
+<style>
+    H1 {
+        margin-left: 5%;
+    }
 
-    <label>Nome Fantasia</label>
-    <input type="text" name="NomeFantasia"><br><br>
+    #form {
+        padding: 30px;
+    }
+</style>
 
-<hr>
 
-    <button type="submit">Cadastrar</button>
+<h1>Cadastro de Fornecedores</h1>
+<form id='form' action="/cad-Fornecedor" method="POST">
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom04">Razão Social</label>
+            <input type="text" class="form-control" name="RazaoSocial" placeholder="Razão Social" required>
+        </div>
+        <br>
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom04">Nome Fantasia</label>
+            <input type="text" class="form-control" name="NomeFantasia" placeholder="Nome Fantasia" required>
+        </div>
+        <div class="col-md-3">
+        <label for="validationCustom03">CNPJ</label>
+        <input type="text" class="form-control" name="Cnpj" placeholder="CNPJ" required>
+        </div>
+
+        <br>
+     
+            
+    </div>
+
+      <div class="form-row">
+        
+        <div class="col-md-3">
+        <label for="validationCustom03">Telefone </label>
+        <input type="text" class="form-control" name="TelContato" placeholder="(Fixo ou Móvel)" required>
+        </div>
+        <div class="col-md-3">
+        <label for="validationCustom03">E-Mail </label>
+        <input type="text" class="form-control" name="Email" placeholder="E-Mail " required>
+        </div>
+   </div>
+    <br>
+    <div class="form-row">
+        <div class="col-md-5">
+            <label for="validationCustom04">Endereço </label>
+            <input type="text" class="form-control" name="Endereco" placeholder="Endereço" required>
+            <br>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationCustom04">Cidade / Estado </label>
+            <input type="text" class="form-control" name="Cidade" placeholder="Ex. Serra Negra / SP" required>
+        </div>
+        <br>
+    </div>
+     <div class="form-row">
+        <div class="col-md-5">
+            <label for="validationCustom04">Principais Atividades </label>
+            <input type="text" class="form-control" name="Atividades" placeholder="Principais Atividades" required>
+            <br>
+        </div>
+    </div>
+    <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+
 
 </form>

@@ -1,23 +1,26 @@
 <h1>Formulário de Produtos</h1>
 
-<table class="table">
+<table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">Descricao</th>
       <th scope="col">ID Familia</th>
       <th scope="col " style="width:20%">Ações</th>
 
-    <br>
+      <br>
     </tr>
+  </thead>
+  <tbody id="data">
     {{#each produtos}}
-     
-    <td>{{descricao}}</td>
-    <td>{{idFamilia}}</td>
-    <td><a href="#" class="btn btn-primary btn-lg disabled" tabindex="-1" role="button" aria-disabled="true">Alterar</a>
-    <a href="#" class="btn btn-secondary btn-lg disabled" tabindex="-1" role="button" aria-disabled="true">Excluir</a></td>
-    <hr>
-     </tr>
-{{/each}}
+    <tr>
+      <td>{{descricao}}</td>
+      <td>{{idFamilia}}</td>
+      <td> </td>
+    </tr>
+
+    {{/each}}
 
   </tbody>
+
+
 </table>

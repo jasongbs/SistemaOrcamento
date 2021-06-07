@@ -1,22 +1,147 @@
-<h1>Formulário para cadatrar Orcamento</h1>
-<form action="/cad-Orcamento" method="POST">
-    <label>IDFornecedor</label>
-    <input type="text" name="IDFornecedor"><br><br>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <label>IDSolicitante</label>
-    <input type="text" name="IDSolicitante"><br><br>
+<style>
+  H1 {
+    margin-left: 5%;
+  }
 
-    <label>Descricao</label>
-    <input type="text" name="Descricao"><br><br>
+  #form {
+    padding: 30px;
+  }
 
-    <label>Data Solicitacao</label>
-    <input type="text" name="DataSolicitacao"><br><br>
+  #addItem {
+    margin-right: 0;
+  }
 
-    <label>Data Limite</label>
-    <input type="text" name="DataLimite"><br><br>
+  #cadastrar {
+    position: absolute;
 
-<hr>
+    right: 5%;
+  }
+</style>
 
-    <button type="submit">Cadastrar</button>
 
+<script>
+
+  function updateClickedDesc() {
+    var select = document.getElementById('descForn');
+    var option = [select.selectedIndex];
+    console.log(option);
+    document.getElementById('IDFornecedor').value = option;//option.value;
+    $('#cnpjForn').val(option);
+  }
+
+  function updateClickedCnpj() {
+    var select = document.getElementById('cnpjForn');
+    var option = [select.selectedIndex];
+    console.log(option);
+    document.getElementById('IDFornecedor').value = option;//option.value;
+    $('#descForn').val(option);
+  }
+
+  $(document).ready(function () {
+
+    /* $('#IDFornecedor').on('change', function() {
+    });*/
+
+
+    // Append table with add row form on add new button click
+    $(".add-new").click(function () {
+      var row = '<tr>' +
+        '<td><select name="ItemProduto" class="form-control " onchange="preencheCampo(this);" required>' +
+        '<option selected>Selecione o Produto</option>' +
+        '{{#each dados.prod}}' +
+        '<option value={{id}}>{{descricao}}</option>' +
+        '{{/each}}</td>' +
+        '<td><input type="number" min="1" class="form-control" name="ItemQuantidade" id="quantidade" required></td>' +
+        '<td><a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a> </td>' +
+        '</tr>';
+      $("table").append(row);
+      $("table tbody tr").eq(index + 1).find(".add").toggle();
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    // Delete row on delete button click
+    $(document).on("click", ".delete", function () {
+      $(this).parents("tr").remove();
+      $(".add-new").removeAttr("disabled");
+    });
+
+    $("#IDFornecedor").on('change', function (e) {
+      alert($(this).val())
+      return false;
+    });
+
+  });
+</script>
+
+<h1>Cadastro de Orçamento</h1>
+
+
+<form id='form' action="/cad-Orcamento" method="POST">
+  <div class="form-row">
+    <div class="col-md-2 mb-3">
+      <label>Código Fornecedor</label>
+      <input type="number" class="form-control" id="IDFornecedor" name="IDFornecedor" disabled>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom02">CNPJ Fornecedor</label>
+      <select id="cnpjForn" name="cnpjForn" class="form-control " onchange="updateClickedCnpj();">
+        <option selected>Selecione o fornecedor</option>
+        {{#each dados.forn}}
+        <option value={{id}}>{{cnpj}}</option>
+        {{/each}}
+
+      </select>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom02">Nome Fornecedor</label>
+      <select id="descForn" name="descForn" class="form-control " onchange="updateClickedDesc(); ">
+        <option selected>Selecione o fornecedor</option>
+        {{#each dados.forn}}
+        <option value={{id}}>{{nomeFantasia}}</option>
+        {{/each}}
+
+      </select>
+    </div>
+
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="validationCustom03">Descrição do Orçamento</label>
+      <input type="text" class="form-control" name="Descricao" placeholder="Descrição do orçamento" required>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="validationCustom04">Solicitante</label>
+      <input type="text" class="form-control" name="IDSolicitante" placeholder="Solicitante" required>
+
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="validationCustom05">Data Fechamento</label>
+      <input type="date" class="form-control" name="DataLimite" required>
+
+    </div>
+  </div>
+
+
+  <button type="button" id='addItem' class="btn btn-info add-new my-1">Adicionar Produto</button>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th scope="col">Descrição</th>
+        <th scope="col">Quantidade</th>
+        <th scope="col">Acao</th>
+        <br>
+      </tr>
+    </thead>
+    <tbody id="tbProdutos">
+    </tbody>
+
+  </table>
+
+  <br>
+  <hr>
+  <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+  </div>
 </form>

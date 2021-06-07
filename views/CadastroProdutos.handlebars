@@ -1,14 +1,18 @@
-<h1>Formulário para cadatrar Produtos</h1>
+<h1>Cadatro de Produtos</h1>
 <form action="/cad-produto" method="POST">
-    
-    <label>Descricao</label>
-    <input type="text" name="Descricao"><br><br>
 
-    <label>Familia</label>
-    <input type="text" name="Familia"><br><br>
+   
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom03">Descricao</label>
+            <input type="text" class="form-control" name="Descricao" placeholder="Descricao do orçamento" required>
 
-<hr>
+            <br>
 
-    <button type="submit">Cadastrar</button>
+            <label for="validationCustom04">Familia</label>
+            <input type="text" class="form-control" name="Familia" placeholder="Familia" required>
 
+            <br>
+
+            <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+        </div>
 </form>
