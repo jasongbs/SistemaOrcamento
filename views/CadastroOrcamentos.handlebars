@@ -86,10 +86,10 @@
     </div>
     <div class="col-md-4 mb-3">
       <label for="validationCustom02">CNPJ Fornecedor</label>
-      <select id="cnpjForn" name="cnpjForn" class="form-control " onchange="updateClickedCnpj();">
+      <select id="cnpjForn" name="cnpjForn"  class="form-control " onchange="updateClickedCnpj();">
         <option selected>Selecione o fornecedor</option>
         {{#each dados.forn}}
-        <option value={{id}}>{{cnpj}}</option>
+        <option title="{{atividades}}" value={{id}}>{{cnpj}}</option>
         {{/each}}
 
       </select>
@@ -99,7 +99,7 @@
       <select id="descForn" name="descForn" class="form-control " onchange="updateClickedDesc(); ">
         <option selected>Selecione o fornecedor</option>
         {{#each dados.forn}}
-        <option value={{id}}>{{nomeFantasia}}</option>
+        <option title="{{ atividades}}" value={{id}}>{{nomeFantasia}}</option>
         {{/each}}
 
       </select>

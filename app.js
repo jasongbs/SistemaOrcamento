@@ -23,11 +23,7 @@ app.use(bodyParser.json())
 
 //Rotas
 app.get('/', function (req, res) {
-
-    Orcamento.findAll().then(function () {
         res.render('index');
-    });
-
 });
 
 
@@ -84,48 +80,41 @@ app.get('/resp-Orcamento', async function (req, res) {
 
     const { Op } = require("sequelize");
 
-    
-    let itensOrc,orc,forn;
+
+    let itensOrc, orc, forn;
 
     await db.sequelize.query("SELECT a.id, a.idFornecedor, a.idOrcamento, b.id as idProduto, b.descricao, a.qtdProduto, a.qtdProduto FROM sqldevmind.itensorcamentos as a inner join sqldevmind.produtos as b on a.idProduto = b.id where a.idFornecedor = :fornecedor and a.idOrcamento= :orcamento",
-    { replacements: { 
-        orcamento: req.query.o, fornecedor: req.query.f}, 
-    type: Op.SELECT
- }).then(function(res){
-        itensOrc = res
-    }).then(async function(){
-         const Orc = await Orcamento.findAll({
-            where: {
-                [Op.and]: [
-                    { idFornecedor: req.query.f },
-                    { id: parseInt(req.query.o) }
-                ]
-    
+        {
+            replacements: {
+                orcamento: req.query.o, fornecedor: req.query.f
             },
-            raw: true 
+            type: Op.SELECT
+        }).then(function (res) {
+            itensOrc = res[0]
+        }).then(async function () {
+            const Orc = await Orcamento.findAll({
+                where: {
+                    [Op.and]: [
+                        { idFornecedor: req.query.f },
+                        { id: parseInt(req.query.o) }
+                    ]
+                },
+                raw: true
+            });
+            orc = Orc[0];
+        }).then(async function () {
+            const Forn = await Fornecedor.findAll({
+                where: {
+                    [Op.and]: [
+                        { id: req.query.f }
+                    ]
+                },
+                raw: true
+            });
+            forn = Forn[0];
+        }).then(function () {
+            res.render('RespOrcamento', { dados: { orc, itensOrc, forn } });
         });
-        orc = Orc[0];
-    }).then( async function(){
-         const Forn = await Fornecedor.findAll({
-            where: {
-                [Op.and]: [
-                    { id: req.query.f }    
-                ]
-            },
-            raw: true 
-        });
-        forn=Forn[0];
-    }).then( function(){
-        console.log();
-        res.render('ViewOrcamentos', { dados: {orc,itensOrc,forn} });
-    });
-
-    
-
- //   const prod = await Produto.findAll({ raw: true });
-
- 
-   
 });
 
 function DataAtual() {
@@ -138,10 +127,35 @@ function DataAtual() {
     return today;
 }
 
+app.post('/resp-Orcamento', async function (req, res) {
+    console.log(req.body);
+
+    for (i = 0; i < req.body.ItemID.length; i++) {
+        await ItensOrcamento.update({ precoProduto: req.body.ItemValor[i] }, {
+            where: {
+                id: req.body.ItemID[i],
+                idOrcamento: req.body.OrcamentoID,
+                idFornecedor: req.body.FornecedorID
+            }
+        }).then(async function () {
+            await Orcamento.update({ statusOrcamento: "Respondido", dataResposta:  DataAtual()}, {
+                where: {
+                    id: req.body.OrcamentoID
+                }
+
+                //res.send("Orcamento cadastro com sucesso!")
+            })
+        }).catch(function (erro) {
+            res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
+        })
+    }
+
+
+    res.redirect('/');
+});
+
 //Envia para cadastro orcamento
 app.post('/cad-Orcamento', async function (req, res) {
-
-
 
     const retornOrc = await Orcamento.create({
         idFornecedor: req.body.cnpjForn,
@@ -168,8 +182,6 @@ app.post('/cad-Orcamento', async function (req, res) {
     }).then(res.redirect('/cad-Orcamento'))
 
 });
-
-
 
 //Envia para cadastro Produto
 app.post('/cad-Produto', function (req, res) {
