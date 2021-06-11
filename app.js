@@ -59,6 +59,7 @@ app.get('/cad-Orcamento', async function (req, res) {
 
     const prod = await Produto.findAll({ raw: true });
     const forn = await Fornecedor.findAll();
+    
     res.render('CadastroOrcamentos', { dados: { prod, forn } });
 });
 
@@ -79,7 +80,6 @@ app.get('/resp-Orcamento', async function (req, res) {
     var db = require('./models/db');
 
     const { Op } = require("sequelize");
-
 
     let itensOrc, orc, forn;
 
@@ -131,7 +131,7 @@ app.post('/resp-Orcamento', async function (req, res) {
     console.log(req.body);
 
     for (i = 0; i < req.body.ItemID.length; i++) {
-        await ItensOrcamento.update({ precoProduto: req.body.ItemValor[i] }, {
+        await ItensOrcamento.update({ precoProduto: req.body.ItemValorUni[i] }, {
             where: {
                 id: req.body.ItemID[i],
                 idOrcamento: req.body.OrcamentoID,
@@ -140,7 +140,8 @@ app.post('/resp-Orcamento', async function (req, res) {
         }).then(async function () {
             await Orcamento.update({ statusOrcamento: "Respondido", dataResposta:  DataAtual()}, {
                 where: {
-                    id: req.body.OrcamentoID
+                    id: req.body.OrcamentoID,
+                    idFornecedor: req.body.FornecedorID
                 }
 
                 //res.send("Orcamento cadastro com sucesso!")
@@ -156,31 +157,44 @@ app.post('/resp-Orcamento', async function (req, res) {
 
 //Envia para cadastro orcamento
 app.post('/cad-Orcamento', async function (req, res) {
-
-    const retornOrc = await Orcamento.create({
-        idFornecedor: req.body.cnpjForn,
+    console.log(req.body);
+    
+   let idOrcamento = await Orcamento.findAll({
+    attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxID']],
+    raw: true,
+  }).then(async function(retorno){
+      console.log();
+    for(var i=0; i<req.body.DescricaoForn.length;i++){
+        console.log("Teste!!!!!"+" Length: "+ req.body.DescricaoForn.length)
+    await Orcamento.create({
+        id:retorno[0].maxID+1,
+        idFornecedor: req.body.DescricaoForn[i],
         idUsuarioSolicitante: req.body.IDSolicitante,
         descricao: req.body.Descricao,
         dataSolicitacao: DataAtual(),
         dataLimite: req.body.DataLimite,
         dataResposta: req.body.DataRespota,
         statusOrcamento: 'aberto',
-
+    
     }).then(function (res) {
-        console.log("Orçamento Numero: " + res.dataValues.id)
-        for (i = 0; i < req.body.ItemProduto.length; i++) {
+        console.log("Orçamento Numero: " + res.dataValues.id )
+        for (a = 0; a <= req.body.ItemProduto.length; a++) {
             ItensOrcamento.create({
                 idOrcamento: res.dataValues.id,
-                idFornecedor: req.body.cnpjForn,
-                idProduto: req.body.ItemProduto[i],
-                qtdProduto: req.body.ItemQuantidade[i],
+                idFornecedor: req.body.DescricaoForn[i],
+                idProduto: req.body.ItemProduto[a],
+                qtdProduto: req.body.ItemQuantidade[a],
             }
             ).catch(function (erro) {
                 res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
             })
         }
-    }).then(res.redirect('/cad-Orcamento'))
+    })
+}
+  })
 
+
+res.redirect('/cad-Orcamento');
 });
 
 //Envia para cadastro Produto

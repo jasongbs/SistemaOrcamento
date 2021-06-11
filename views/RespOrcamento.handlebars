@@ -1,5 +1,3 @@
-
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <style>
@@ -20,42 +18,56 @@
 
     right: 5%;
   }
+
+  #total {
+
+    position: relative;
+    left: 0px;
+
+  }
 </style>
 
 
 <script>
-  
-  function updateValorTotal(){
-
-     var quantidade = document.getElementById('itemQuantidade').value;
-     var ValorUni = document.getElementById('itemValorUni').value;
-      document.getElementById('itemValorTotal').value = quantidade*ValorUni;
-
-      console.log(quantidade);
-  }
-
-  function updateClickedDesc() {
-    var select = document.getElementById('descForn');
-    var option = [select.selectedIndex];
-    console.log(option);
-    document.getElementById('IDFornecedor').value = option;//option.value;
-    $('#cnpjForn').val(option);
-  }
-
-  function updateClickedCnpj() {
-    var select = document.getElementById('cnpjForn');
-    var option = [select.selectedIndex];
-    console.log(option);
-    document.getElementById('IDFornecedor').value = option;//option.value;
-    $('#descForn').val(option);
-  }
 
 
-
-    /* $('#IDFornecedor').on('change', function() {
-    });*/
+  $(document).ready(function () {
 
 
+    $('#frete').blur(function () {
+      var conteudo = $('#frete').val();
+      var total = $('#PrintSoma').val();
+
+      $('#PrintSoma').val((Number.parseFloat(conteudo) + Number.parseFloat(total)).toFixed(2));
+
+
+    })
+
+
+    var prices = $("input[id^=itemValorUni]"),
+      amounts = $("input[id^=itemQuantidade]"),
+      subTotals = $("input[id^=itemValorTotal]"),
+      printSum = $("#PrintSoma");
+    function sumIt() {
+      var total = 0;
+      prices.each(function (index, price) {
+        var subTotal = (parseFloat(price.value) || 0) * (parseFloat(amounts.eq(index).val()) || 0);
+
+        subTotals.eq(index).val(subTotal.toFixed(2));
+        total += subTotal;
+      });
+
+      printSum.val(total.toFixed(2));
+    }
+
+    prices.blur("keyup", sumIt);
+    amounts.blur("keyup", sumIt);
+
+    sumIt();
+
+
+
+  })
 
 
 </script>
@@ -65,40 +77,45 @@
 
 <form id='form' action="/resp-Orcamento" method="POST">
   <div class="form-row">
-     <div class="col-md-1 mb-3">
+    <div class="col-md-1 mb-3">
       <label>Orçamento</label>
       <input type="number" class="form-control" id="orcamentoID" value="{{dados.orc.id}}" name="OrcamentoID" readonly>
     </div>
     <div class="col-md-2 mb-3">
       <label>Código Fornecedor</label>
-      <input type="number" class="form-control" id="fornecedorId" value="{{dados.forn.id}}" name="FornecedorID" readonly>
+      <input type="number" class="form-control" id="fornecedorId" value="{{dados.forn.id}}" name="FornecedorID"
+        readonly>
     </div>
     <div class="col-md-2 mb-3">
       <label for="validationCustom02">CNPJ Fornecedor</label>
-     <input type="text" min="1" class="form-control" name="FornecedorCNPJ" value="{{dados.forn.cnpj}}" id="fornecedorCNPJ" disabled>
+      <input type="text" min="1" class="form-control" value="{{dados.forn.cnpj}}" id="fornecedorCNPJ" readonly>
     </div>
+
     <div class="col-md-4 mb-3">
       <label for="validationCustom02">Nome Fornecedor</label>
-      <input type="text" min="1" class="form-control"  name="FornecedorNome" value="{{dados.forn.nomeFantasia}}" id="fornecedorNome" disabled>
+      <input type="text" min="1" class="form-control" value="{{dados.forn.nomeFantasia}}" id="fornecedorNome" readonly>
     </div>
     <div class="col-md-2 mb-1">
       <label for="validationCustom02">Data Solicitação</label>
-      <input type="text" min="1" class="form-control" name="OrcamentoDataSolicitacao" value="{{dados.orc.dataSolicitacao}}" id="orcamentoDataSolicitacao" disabled>
+      <input type="text" min="1" class="form-control" value="{{dados.orc.dataSolicitacao}}"
+        id="orcamentoDataSolicitacao" readonly>
     </div>
   </div>
   <div class="form-row">
     <div class="col-md-6 mb-3">
       <label for="validationCustom03">Descrição do Orçamento </label>
-      <input type="text" class="form-control" name="OrcamentoDescricao" value="{{dados.orc.descricao}}" placeholder="Descrição do orçamento" disabled>
+      <input type="text" class="form-control" value="{{dados.orc.descricao}}" placeholder="Descrição do orçamento"
+        readonly>
     </div>
     <div class="col-md-3 mb-3">
       <label for="validationCustom04">Solicitante</label>
-      <input type="text" class="form-control" name="SolicitanteID"  value="{{dados.orc.idUsuarioSolicitante}}" placeholder="Solicitante" disabled>
+      <input type="text" class="form-control" value="{{dados.orc.idUsuarioSolicitante}}" placeholder="Solicitante"
+        readonly>
 
     </div>
     <div class="col-md-2 mb-3">
       <label for="validationCustom05">Data Fechamento</label>
-      <input type="date" class="form-control" value="{{dados.orc.dataLimite}}" name="DataLimite" disabled>
+      <input type="date" class="form-control" value="{{dados.orc.dataLimite}}" readonly>
 
     </div>
   </div>
@@ -108,9 +125,9 @@
   <table class="table table-hover">
     <thead>
       <tr>
-         <th scope="col">ID Registro</th>
-         <th scope="col">ID Produto</th>
-        <th scope="col">Produto</th>
+        <th scope="col">ID Registro</th>
+        <th scope="col">ID Produto</th>
+        <th scope="col" class="col-md-6">Produto</th>
         <th scope="col">Quantidade</th>
         <th scope="col">% IPI</th>
         <th scope="col">Valor Uni</th>
@@ -119,23 +136,38 @@
       </tr>
     </thead>
     <tbody id="tbProdutos">
-         {{#each dados.itensOrc}}
-        <td><input type="text" min="1" class="form-control" value="{{id}}" name="ItemID" id="itemId" readonly></td>
-       <td><input type="text" min="1" class="form-control" value="{{idProduto}}" name="ItemIDProduto" id="itemIdProduto" disabled></td>
-      <td><input type="text" min="1" class="form-control" value="{{descricao}}" name="ItemDescricao" id="itemDescricao" disabled></td>
-       <td><input type="text" min="1" class="form-control" value="{{qtdProduto}}" name="ItemQuantidade" id="itemQuantidade" readonly></td>
-       <td><input type="number" min="1" class="form-control" name="ItemIpi" id="itemIpi" required></td>
-       <td><input type="number" min="1" class="form-control"  name="ItemValorUni" id="itemValorUni" onblur="updateValorTotal(this)" required></td>
-      <td><input type="number" min="1" class="form-control" name="ItemValorTotal" id="itemValorTotal" required></td>
-      <td> </td>
-       </tr>
-    {{/each}}
+
+      {{#each dados.itensOrc}}
+      <tr>
+        <td><input type="text" min="1" class="form-control " value="{{id}}" name="ItemID" id="itemId{{id}}" readonly>
+        </td>
+        <td><input type="text" min="1" class="form-control" value="{{idProduto}}" id="itemIdProduto{{id}}" readonly>
+        </td>
+        <td><input type="text" min="1" class="form-control" value="{{descricao}}" id="itemDescricao" readonly></td>
+        <td><input type="text" min="1" class="form-control ValoresItens" value="{{qtdProduto}}" name="ItemQuantidade"
+            id="itemQuantidade{{id}}" readonly></td>
+        <td><input type="number" min="1" class="form-control" name="ItemIpi" id="itemIpi" required></td>
+        <td><input type="number" min="1" class="form-control ValoresItens" name="ItemValorUni" id="itemValorUni{{id}}"
+            required></td>
+        <td><input type="number" min="1" class="form-control" name="ItemValorTotal" id="itemValorTotal{{id}}" readonly>
+        </td>
+        <td> </td>
+      </tr>
+      {{/each}}
     </tbody>
 
   </table>
+  <div class="form-row">
+    <div class="col-md-1 mb-3">
+      <label for="validationCustom02">Frete</label><br>
+      <input type="number" min="1" class="form-control ValoresItens" value="{{qtdProduto}}" name="Frete" id="frete" required>
+    </div>
 
-  <br>
-  <hr>
-  <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+    <div class="col-md-10 mb-3">
+      <label for="validationCustom02">TOTAL</label><br>
+      <input type="number" class="form-control col-md-1" min="1" id="PrintSoma" readonly>
+    </div>
   </div>
+  <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
 </form>
+

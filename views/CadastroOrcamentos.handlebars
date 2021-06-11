@@ -1,4 +1,14 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<head>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="/js/bootstrap-select.js"></script>
+
+</head>
+
+
 
 <style>
   H1 {
@@ -13,36 +23,26 @@
     margin-right: 0;
   }
 
+  .select {
+    width: 400px;
+    height: 30px;
+  }
+
   #cadastrar {
     position: absolute;
 
     right: 5%;
   }
+
+
 </style>
 
 
 <script>
 
-  function updateClickedDesc() {
-    var select = document.getElementById('descForn');
-    var option = [select.selectedIndex];
-    console.log(option);
-    document.getElementById('IDFornecedor').value = option;//option.value;
-    $('#cnpjForn').val(option);
-  }
-
-  function updateClickedCnpj() {
-    var select = document.getElementById('cnpjForn');
-    var option = [select.selectedIndex];
-    console.log(option);
-    document.getElementById('IDFornecedor').value = option;//option.value;
-    $('#descForn').val(option);
-  }
+  
 
   $(document).ready(function () {
-
-    /* $('#IDFornecedor').on('change', function() {
-    });*/
 
 
     // Append table with add row form on add new button click
@@ -73,6 +73,7 @@
     });
 
   });
+
 </script>
 
 <h1>Cadastro de Orçamento</h1>
@@ -80,32 +81,23 @@
 
 <form id='form' action="/cad-Orcamento" method="POST">
   <div class="form-row">
-    <div class="col-md-2 mb-3">
-      <label>Código Fornecedor</label>
-      <input type="number" class="form-control" id="IDFornecedor" name="IDFornecedor" disabled>
-    </div>
-    <div class="col-md-4 mb-3">
-      <label for="validationCustom02">CNPJ Fornecedor</label>
-      <select id="cnpjForn" name="cnpjForn"  class="form-control " onchange="updateClickedCnpj();">
-        <option selected>Selecione o fornecedor</option>
-        {{#each dados.forn}}
-        <option title="{{atividades}}" value={{id}}>{{cnpj}}</option>
-        {{/each}}
-
-      </select>
-    </div>
-    <div class="col-md-4 mb-3">
+   
+    <div class="col-md-5 mb-4">
       <label for="validationCustom02">Nome Fornecedor</label>
-      <select id="descForn" name="descForn" class="form-control " onchange="updateClickedDesc(); ">
-        <option selected>Selecione o fornecedor</option>
+      <br>
+      <select for="validationCustom02"  title="Selecione o Fornecedor" data-live-search="true" name="DescricaoForn" id="descricaoForn"
+        class="selectpicker form-control" data-width="75%" data-dropup-auto="false" multiple required>
         {{#each dados.forn}}
-        <option title="{{ atividades}}" value={{id}}>{{nomeFantasia}}</option>
+        <option value={{id}} data-subtext="{{cnpj}} - {{atividades}}">{{nomeFantasia}}</option>
         {{/each}}
-
       </select>
+
     </div>
 
   </div>
+
+
+
   <div class="form-row">
     <div class="col-md-6 mb-3">
       <label for="validationCustom03">Descrição do Orçamento</label>
@@ -145,3 +137,8 @@
   <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
   </div>
 </form>
+
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="//assets.locaweb.com.br/locastyle/2.0.6/javascripts/locastyle.js"></script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>

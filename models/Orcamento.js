@@ -3,10 +3,10 @@ const db = require('./db')
 const Orcamento = db.sequelize.define('orcamento', {
     id: {
         type: db.Sequelize.INTEGER,
-        autoIncrement: true,
         primaryKey: true
     },
     idFornecedor: {
+        primaryKey: true,
         type: db.Sequelize.INTEGER
     },
     idUsuarioSolicitante: {
