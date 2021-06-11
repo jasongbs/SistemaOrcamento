@@ -1,7 +1,7 @@
 {
-  "name": "node_js_celke",
+  "name": "Orcamento",
   "version": "1.0.0",
-  "description": "cursonode",
+  "description": "Sistema para Orcamentos",
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -16,6 +16,6 @@
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1"
   },
-  "author": "Cesar Szpak",
+  "author": "Jason",
   "license": "ISC"
 }
