@@ -86,12 +86,12 @@
       <label for="validationCustom02">Nome Fornecedor</label>
       <br>
       <select for="validationCustom02"  title="Selecione o Fornecedor" data-live-search="true" name="DescricaoForn" id="descricaoForn"
-        class="selectpicker form-control" data-width="75%" data-dropup-auto="false" multiple required>
+        class="selectpicker form-control" data-width="75%" data-dropup-auto="false" data-selected-text-format="count > 2" multiple required>
         {{#each dados.forn}}
         <option value={{id}} data-subtext="{{cnpj}} - {{atividades}}">{{nomeFantasia}}</option>
         {{/each}}
       </select>
-
+   
     </div>
 
   </div>

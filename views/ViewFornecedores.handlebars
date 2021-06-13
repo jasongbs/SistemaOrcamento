@@ -5,15 +5,22 @@
     <tr>
       <th scope="col">CNPJ</th>
       <th scope="col">Nome Fantasia</th>
+      <th scope="col">Razão Social</th>
+      <th scope="col">Numero Contato</th>
+      <th scope="col">Atividades</th>
 
-    <br>
+
+      <br>
     </tr>
     {{#each fornecedores}}
     <td>{{cnpj}}</td>
     <td>{{nomeFantasia}}</th>
- 
-     </tr>
-{{/each}}
+  <td>{{razaoSocial}}</th>
+  <td>{{telContato}}</th>
+  <td>{{atividades}}</th>
 
-  </tbody>
+      </tr>
+      {{/each}}
+
+      </tbody>
 </table>

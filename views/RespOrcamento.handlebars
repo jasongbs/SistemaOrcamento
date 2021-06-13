@@ -1,5 +1,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
   H1 {
     margin-left: 5%;
@@ -29,20 +33,12 @@
 
 
 <script>
-
-
   $(document).ready(function () {
-
-
     $('#frete').blur(function () {
       var conteudo = $('#frete').val();
       var total = $('#PrintSoma').val();
-
       $('#PrintSoma').val((Number.parseFloat(conteudo) + Number.parseFloat(total)).toFixed(2));
-
-
     })
-
 
     var prices = $("input[id^=itemValorUni]"),
       amounts = $("input[id^=itemQuantidade]"),
@@ -52,27 +48,48 @@
       var total = 0;
       prices.each(function (index, price) {
         var subTotal = (parseFloat(price.value) || 0) * (parseFloat(amounts.eq(index).val()) || 0);
-
         subTotals.eq(index).val(subTotal.toFixed(2));
         total += subTotal;
       });
-
       printSum.val(total.toFixed(2));
     }
-
     prices.blur("keyup", sumIt);
     amounts.blur("keyup", sumIt);
-
     sumIt();
-
-
-
   })
-
 
 </script>
 
-<h1>Preenchimento de Orçamento</h1>
+
+
+<!-- Custom styles for this template -->
+<link href="headers.css" rel="stylesheet">
+</head>
+
+<style>
+
+ 
+
+ 
+</style>
+
+<main>
+
+  <body>
+
+
+    <div class="b-example-divider"></div>
+
+    <header>
+      <div class="px-3 py-1 bg-dark text-white">
+        <div class="container">
+          <h2>Preenchimento de Orçamento</h2>
+        </div>
+      </div>
+
+    </header>
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+</main>
 
 
 <form id='form' action="/resp-Orcamento" method="POST">
@@ -160,7 +177,8 @@
   <div class="form-row">
     <div class="col-md-1 mb-3">
       <label for="validationCustom02">Frete</label><br>
-      <input type="number" min="1" class="form-control ValoresItens" value="{{qtdProduto}}" name="Frete" id="frete" required>
+      <input type="number" min="1" class="form-control ValoresItens" value="{{qtdProduto}}" name="Frete" id="frete"
+        required>
     </div>
 
     <div class="col-md-10 mb-3">
@@ -170,4 +188,3 @@
   </div>
   <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
 </form>
-
