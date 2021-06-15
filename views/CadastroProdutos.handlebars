@@ -1,18 +1,60 @@
+<style>
+    h1 {
+        text-align: center
+    }
+
+   
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2%
+    }
+
+    section {
+        margin-top: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    input,
+    textarea {
+        width: 200px;
+        border: 1px solid #636f83
+    }
+
+    .submit-button {
+        width: 170px;
+        height: 40px;
+        background-color: #2eb85c;
+        border-radius: 5px;
+        color: #fff;
+        text-align: center;
+        transition: all 0.5s
+    }
+
+    .submit-button:hover {
+        opacity: 0.7
+    }
+</style>
+
+
 <h1>Cadatro de Produtos</h1>
 <form action="/cad-produto" method="POST">
 
-   
-        <div class="col-md-6 mb-3">
-            <label for="validationCustom03">Descricao</label>
-            <input type="text" class="form-control" name="Descricao" placeholder="Descricao do orçamento" required>
 
-            <br>
+    <div class="col-md-6 mb-3">
+        <label for="validationCustom03">Descricao</label>
+        <input type="text" class="form-control" name="Descricao" placeholder="Descricao do orçamento" required>
 
-            <label for="validationCustom04">Familia</label>
-            <input type="text" class="form-control" name="Familia" placeholder="Familia" required>
+        <br>
 
-            <br>
+        <label for="validationCustom04">Familia</label>
+        <input type="text" class="form-control" name="Familia" placeholder="Familia" required>
 
-            <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
-        </div>
+        <br>
+
+        <button type="submit" id="cadastrar" class="btn btn-info submit-button">Cadastrar</button>
+    </div>
 </form>

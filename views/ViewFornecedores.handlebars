@@ -1,6 +1,55 @@
-<h1>Formulário de Fornecedores</h1>
+<script>
 
-<table class="table">
+  function editar(e) {
+
+    var linha = $(e).closest("tr");
+    var cnpj = linha.find("td:eq(0)").text().trim(); // texto da primeira coluna
+    var nf = linha.find("td:eq(1)").text().trim(); // texto da segunda coluna
+    var rs = linha.find("td:eq(2)").text().trim(); // texto da terceira coluna
+    var tel = linha.find("td:eq(3)").text().trim(); // texto da primeira coluna
+    var ati = linha.find("td:eq(4)").text().trim(); // texto da segunda coluna
+    var id = linha.find("td:eq(5)").text().trim(); // texto da terceira coluna
+    var email = linha.find("td:eq(6)").text().trim(); // texto da primeira coluna
+    var endereco = linha.find("td:eq(7)").text().trim(); // texto da segunda coluna
+    var cidade = linha.find("td:eq(8)").text().trim(); // texto da terceira coluna
+    
+    $("#modalCnpj").val(cnpj);
+    $("#modalNomeFantasia").val(nf);
+    $("#modalRazaoSocial").val(rs);
+    $("#modalTelContato").val(tel);
+    $("#modalEmail").val(email);
+    $("#modalEndereco").val(endereco);
+    $("#modalCidade").val(cidade);
+    $("#modalAtividades").val(ati);
+    $("#modalid").val(id);
+
+
+  }
+
+  $(document).ready(function() {
+    $("#lockInput").click(function (){
+                // habilita o campo 
+        $(".editarModal").prop("readonly", false);
+        $('.btn-Submit').prop('disabled',false);
+
+    });
+
+    $(".clouseModal").click(function (){
+                // habilita o campo 
+        $(".editarModal").prop("readonly", true);
+        $('.btn-Submit').prop('disabled',true);
+
+    });
+
+});
+
+</script>
+
+
+
+<h1 align="center">Formulário de Fornecedores</h1>
+
+<table class=" table table-hover">
   <thead>
     <tr>
       <th scope="col">CNPJ</th>
@@ -8,19 +57,122 @@
       <th scope="col">Razão Social</th>
       <th scope="col">Numero Contato</th>
       <th scope="col">Atividades</th>
+      <th scope="col">Ações</th>
 
 
       <br>
     </tr>
+  </thead>
+  <tbody id="data">
     {{#each fornecedores}}
     <td>{{cnpj}}</td>
     <td>{{nomeFantasia}}</th>
-  <td>{{razaoSocial}}</th>
-  <td>{{telContato}}</th>
-  <td>{{atividades}}</th>
+    <td>{{razaoSocial}}</th>
+    <td>{{telContato}}</th>
+    <td >{{atividades}}</th>
+    <td style="display:none">{{id}}</td>
+    <td style="display:none">{{email}}</td>
+    <td style="display:none">{{endereco}}</td>
+    <td style="display:none">{{cidade}}</td>
+    <td>
 
-      </tr>
-      {{/each}}
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-pencil-square"
+        viewBox="0 0 20 20" data-toggle="modal" type="button" value="Editar" data-target="#modalEditar"
+        class="nav-link text-black" onclick="editar(this)">
+        <path
+          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+        <path fill-rule="evenodd"
+          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+      </svg>
+    </td>
+    </tr>
 
-      </tbody>
+    {{/each}}
+
+  </tbody>
 </table>
+
+
+<form id='form' action="/alt-Fornecedor" method="POST">
+  <!-- Modal -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Visualizar/Alterar Fornecedor</h5>
+          <button type="button" class="close clouseModal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Inicio Corpo modal -->
+
+          <div class="form-row">
+            <div class="col-md-7 mb-3">
+              <label for="validationCustom04">Código Fornecedor</label>
+              <input type="text" class="form-control" id="modalid" style="width:30%" name="ModalID"
+                placeholder="ID" readonly>
+            </div>
+            <div class="col-md-7 mb-3">
+              <label for="validationCustom04">Razão Social</label>
+              <input type="text" class="form-control editarModal" id="modalRazaoSocial" name="ModaRazaoSocial"
+                placeholder="Razão Social" readonly>
+            </div>
+            <br>
+            <div class="col-md-7 mb-3">
+              <label for="validationCustom04">Nome Fantasia</label>
+              <input type="text" class="form-control editarModal" id="modalNomeFantasia" name="ModaNomeFantasia"
+                placeholder="Nome Fantasia" readonly>
+            </div>
+            <div class="col-md-5">
+              <label for="validationCustom03">CNPJ</label>
+              <input type="text" class="form-control editarModal" id="modalCnpj" name="ModaCnpj" placeholder="CNPJ" readonly>
+            </div>
+            <br>
+          </div>
+          <div class="form-row">
+            <div class="col-md-3">
+              <label for="validationCustom03">Telefone </label>
+              <input type="text" class="form-control editarModal" id="modalTelContato" name="ModaTelContato"
+                placeholder="(Fixo ou Móvel)" readonly>
+            </div>
+            <div class="col-md-4">
+              <label for="validationCustom03">E-Mail </label>
+              <input type="text" class="form-control editarModal" id="modalEmail" name="ModaEmail" placeholder="E-Mail " readonly>
+            </div>
+          </div>
+          <br>
+          <div class="form-row">
+            <div class="col-md-6">
+              <label for="validationCustom04">Endereço </label>
+              <input type="text" class="form-control editarModal" id="modalEndereco" name="ModaEndereco" placeholder="Endereço"
+                readonly>
+              <br>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="validationCustom04">Cidade / Estado </label>
+              <input type="text" class="form-control editarModal" id="modalCidade" name="ModaCidade" placeholder="Ex. Serra Negra / SP"
+                readonly>
+            </div>
+            <br>
+          </div>
+          <div class="form-row">
+            <div class="col-md-8">
+              <label for="validationCustom04">Principais Atividades </label>
+              <input type="text" class="form-control editarModal" id="modalAtividades" name="ModaAtividades"
+                placeholder="Principais Atividades" readonly>
+              <br>
+            </div>
+          </div>
+
+          <!-- Fim Corpo Modal-->
+        </div>
+        <div class="modal-footer">
+           <button type="button" id="lockInput" class="btn btn-primary editarModal">Habilidar Edição</button>
+          <button type="submit"  class="btn btn-primary btn-Submit" disabled >Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

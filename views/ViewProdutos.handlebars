@@ -1,11 +1,38 @@
-<h1>Formulário de Produtos</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<style>
+   #form-row{
+   padding:5%;
+ }
+
+</style>
+
+<script>
+
+  function editar(e) {
+
+    var linha = $(e).closest("tr");
+    var id = linha.find("td:eq(0)").text().trim(); // texto da primeira coluna
+    var descricao = linha.find("td:eq(1)").text().trim(); // texto da segunda coluna
+    var familia = linha.find("td:eq(2)").text().trim(); // texto da terceira coluna
+
+    $("#EditarDescricao").val(descricao);
+    $("#EditarID").val(id);
+    $("#EditarFamilia").val(familia);
+
+  }
+
+</script>
+
+<h1 align="center">Formulário de Produtos</h1>
 
 <table class="table table-hover">
   <thead>
     <tr>
+      <th scope="col" style="width:10%">Código</th>
       <th scope="col">Descricao</th>
-      <th scope="col">ID Familia</th>
-      <th scope="col " style="width:20%">Ações</th>
+      <th scope="col">Familia</th>
+      <th scope="col " style="width:10%">Ações</th>
 
       <br>
     </tr>
@@ -13,9 +40,20 @@
   <tbody id="data">
     {{#each produtos}}
     <tr>
+      <td>{{id}}</td>
       <td>{{descricao}}</td>
       <td>{{idFamilia}}</td>
-      <td> </td>
+      <td>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-pencil-square"
+          viewBox="0 0 20 20" data-toggle="modal" type="button" value="Editar" data-target="#modalEditar"
+          class="nav-link text-black" onclick="editar(this)">
+          <path
+            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+          <path fill-rule="evenodd"
+            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+        </svg>
+      </td>
     </tr>
 
     {{/each}}
@@ -24,3 +62,38 @@
 
 
 </table>
+
+<form id='form' action="/alt-Produto" method="POST">
+  <!-- Modal -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Alterar Produto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-8">
+            <label for="validationCustom03">ID </label>
+            <input type="text" class="form-control" id="EditarID" name="EditarID" placeholder="Descrição" readonly>
+
+            <br>
+            <label for="validationCustom03">Descrição </label>
+            <input type="text" class="form-control" id="EditarDescricao" name="EditarDescricao" placeholder="Descrição"
+              required>
+            <br>
+            <label for="validationCustom03">Familia </label>
+            <input type="text" class="form-control" id="EditarFamilia" name="EditarFamilia" placeholder="Familia"
+              required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

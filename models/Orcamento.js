@@ -26,10 +26,16 @@ const Orcamento = db.sequelize.define('orcamento', {
     },
     dataResposta: {
         type: db.Sequelize.STRING
+    },
+    frete: {
+        type: db.Sequelize.STRING
     }
 })
 
 //Criar a tabela
 //Orcamento.sync({force: true})
+
+//Alter a tabela
+//Orcamento.sync({alter: true})
 
 module.exports = Orcamento

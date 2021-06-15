@@ -15,10 +15,16 @@ const Itens = db.sequelize.define('itensOrcamento', {
     },
     precoProduto: {
         type: db.Sequelize.STRING
+    },
+    valorIpi: {
+        type: db.Sequelize.STRING
     }
 })
 
 //Criar a tabela
 //Itens.sync({force: true})
+
+//Alter a tabela
+//Itens.sync({alter: true})
 
 module.exports = Itens

@@ -1,10 +1,37 @@
 <style>
-    H1 {
-        margin-left: 5%;
+    h1 {
+        text-align: center
     }
 
-    #form {
-        padding: 30px;
+    form {
+        padding-left: 2%;
+        padding-right: 2%;
+        margin-top: 2%
+    }
+
+    section {
+        margin-top: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    input {
+        width: 200px;
+        border: 1px solid #636f83
+    }
+
+    .submit-button {
+        width: 170px;
+        height: 40px;
+        background-color: #2eb85c;
+        border-radius: 5px;
+        color: #fff;
+        text-align: center;
+        transition: all 0.5s
+    }
+
+    .submit-button:hover {
+        opacity: 0.7
     }
 </style>
 
@@ -22,26 +49,26 @@
             <input type="text" class="form-control" name="NomeFantasia" placeholder="Nome Fantasia" required>
         </div>
         <div class="col-md-3">
-        <label for="validationCustom03">CNPJ</label>
-        <input type="text" class="form-control" name="Cnpj" placeholder="CNPJ" required>
+            <label for="validationCustom03">CNPJ</label>
+            <input type="text" class="form-control" name="Cnpj" placeholder="CNPJ" required>
         </div>
 
         <br>
-     
-            
+
+
     </div>
 
-      <div class="form-row">
-        
+    <div class="form-row">
+
         <div class="col-md-3">
-        <label for="validationCustom03">Telefone </label>
-        <input type="text" class="form-control" name="TelContato" placeholder="(Fixo ou Móvel)" required>
+            <label for="validationCustom03">Telefone </label>
+            <input type="text" class="form-control" name="TelContato" placeholder="(Fixo ou Móvel)" required>
         </div>
         <div class="col-md-3">
-        <label for="validationCustom03">E-Mail </label>
-        <input type="text" class="form-control" name="Email" placeholder="E-Mail " required>
+            <label for="validationCustom03">E-Mail </label>
+            <input type="text" class="form-control" name="Email" placeholder="E-Mail " required>
         </div>
-   </div>
+    </div>
     <br>
     <div class="form-row">
         <div class="col-md-5">
@@ -55,14 +82,14 @@
         </div>
         <br>
     </div>
-     <div class="form-row">
+    <div class="form-row">
         <div class="col-md-5">
             <label for="validationCustom04">Principais Atividades </label>
             <input type="text" class="form-control" name="Atividades" placeholder="Principais Atividades" required>
             <br>
         </div>
     </div>
-    <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+    <button type="submit" id="cadastrar" class="btn btn-info submit-button">Cadastrar</button>
 
 
 </form>

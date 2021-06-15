@@ -9,6 +9,7 @@ const Orcamento = require("./models/Orcamento")
 const ItensOrcamento = require("./models/ItensOrcamento")
 const Produto = require("./models/Produto")
 const Fornecedor = require("./models/Fornecedor");
+const nodemailer = require('nodemailer')
 const { Sequelize } = require("./models/db");
 
 
@@ -20,6 +21,25 @@ app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+
+async function SendEmail(Sendfrom,link) {
+    console.log("Enviando email para: "+Sendfrom)
+    var transport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "jason.santos585@al.unieduk.com.br",
+            pass: "47332284812"
+        }
+    });
+
+    let message = await transport.sendMail({
+        from: '"Contato DEVMIND" <jasongbds@gmail.com>',
+        to: Sendfrom,
+        subject: "Chegou um novo orçamento para você!",
+        html: "Olá caro fornecedor, <br>Estamos enviando uma solicitação para preenchimento de cotação de produtos. <br><p>Link para responder o orçamento: "+link+"<p>",
+        
+    })
+}
 
 //Rotas
 app.get('/', function (req, res) {
@@ -76,6 +96,42 @@ app.get('/dashboard', function (req, res) {
 });
 
 
+app.post('/alt-Produto',async function (req, res) {
+    console.log(req.body.EditarFamilia);
+    await Produto.update({ descricao: req.body.EditarDescricao,idFamilia: req.body.EditarFamilia}, {
+        where: {
+          id: req.body.EditarID
+        }
+      });
+      
+      await Produto.findAll().then(function (produtos) {
+        res.render('ViewProdutos', { produtos: produtos });
+    });
+});
+
+
+app.post('/alt-Fornecedor',async function (req, res) {
+    console.log(req.body.EditarFamilia);
+    await Fornecedor.update({ 
+        razaoSocial: req.body.ModaRazaoSocial,
+        nomeFantasia: req.body.ModaNomeFantasia,
+        cnpj: req.body.ModaCnpj,
+        telContato: req.body.ModaTelContato,
+        email: req.body.ModaEmail,
+        endereco: req.body.ModaEndereco,
+        cidade: req.body.ModaCidade,
+        atividades: req.body.ModaAtividades 
+    }, {
+        where: {
+          id: req.body.ModalID
+        }
+      });
+      
+      await Fornecedor.findAll().then(function (fornecedores) {
+        res.render('ViewFornecedores', { fornecedores: fornecedores });
+    });
+});
+
 app.get('/resp-Orcamento', async function (req, res) {
     var db = require('./models/db');
 
@@ -123,10 +179,10 @@ app.get('/resp-Orcamento', async function (req, res) {
         res.render('ErrorOrcamento', { title: 'Error', layout: false })
     }
 });
-
+/*
 app.use(function (req, res, next) {
     res.render('Error', { title: 'Erro', layout: false })
-})
+})*/
 
 function DataAtual() {
     var today = new Date();
@@ -139,29 +195,57 @@ function DataAtual() {
 }
 
 app.post('/resp-Orcamento', async function (req, res) {
-    console.log(req.body);
-
-    for (i = 0; i < req.body.ItemID.length; i++) {
-        await ItensOrcamento.update({ precoProduto: req.body.ItemValorUni[i] }, {
-            where: {
-                id: req.body.ItemID[i],
-                idOrcamento: req.body.OrcamentoID,
-                idFornecedor: req.body.FornecedorID
+        if(1 == req.body.ItemID.length){
+            for (i = 0; i < req.body.ItemID.length; i++) {
+                console.log(req.body);
+                console.log("Com variavel "+req.body.ItemValorUni);
+                await ItensOrcamento.update({ precoProduto: req.body.ItemValorUni }, {
+                    where: {
+                        id: req.body.ItemID,
+                        idOrcamento: req.body.OrcamentoID,
+                        idFornecedor: req.body.FornecedorID
+                    }
+                }).then(async function () {
+                    await Orcamento.update({ statusOrcamento: "Respondido", dataResposta: DataAtual() }, {
+                        where: {
+                            id: req.body.OrcamentoID,
+                            idFornecedor: req.body.FornecedorID
+                        }
+        
+                        //res.send("Orcamento cadastro com sucesso!")
+                    })
+                }).catch(function (erro) {
+                    res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
+                })
             }
-        }).then(async function () {
-            await Orcamento.update({ statusOrcamento: "Respondido", dataResposta: DataAtual() }, {
-                where: {
-                    id: req.body.OrcamentoID,
-                    idFornecedor: req.body.FornecedorID
-                }
-
-                //res.send("Orcamento cadastro com sucesso!")
-            })
-        }).catch(function (erro) {
-            res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
-        })
-    }
-
+        
+        }
+        else{
+            for (i = 0; i < req.body.ItemID.length; i++) {
+                console.log(req.body);
+                console.log("Com variavel "+req.body.ItemValorUni[i]);
+                await ItensOrcamento.update({ precoProduto: req.body.ItemValorUni[i],valorIpi:req.body.ItemIpi[i]  }, {
+                    where: {
+                        id: req.body.ItemID[i],
+                        idOrcamento: req.body.OrcamentoID,
+                        idFornecedor: req.body.FornecedorID
+                    }
+                }).then(async function () {
+                    await Orcamento.update({ statusOrcamento: "Respondido", dataResposta: DataAtual(), frete: req.body.Frete}, {
+                        where: {
+                            id: req.body.OrcamentoID,
+                            idFornecedor: req.body.FornecedorID
+                        }
+        
+                        //res.send("Orcamento cadastro com sucesso!")
+                    })
+                }).catch(function (erro) {
+                    res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
+                })
+            }
+        
+        }
+   
 
     res.redirect('/');
 });
@@ -170,15 +254,15 @@ app.post('/resp-Orcamento', async function (req, res) {
 app.post('/cad-Orcamento', async function (req, res) {
     console.log(req.body);
 
-    let idOrcamento = await Orcamento.findAll({
+     await Orcamento.findAll({
         attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxID']],
         raw: true,
     }).then(async function (retorno) {
-        console.log();
+        let idOrcamento = retorno[0].maxID + 1;
         for (var i = 0; i < req.body.DescricaoForn.length; i++) {
             console.log("Teste!!!!!" + " Length: " + req.body.DescricaoForn.length)
             await Orcamento.create({
-                id: retorno[0].maxID + 1,
+                id:idOrcamento,
                 idFornecedor: req.body.DescricaoForn[i],
                 idUsuarioSolicitante: req.body.IDSolicitante,
                 descricao: req.body.Descricao,
@@ -189,7 +273,7 @@ app.post('/cad-Orcamento', async function (req, res) {
 
             }).then(function (res) {
                 console.log("Orçamento Numero: " + res.dataValues.id)
-                for (a = 0; a <= req.body.ItemProduto.length; a++) {
+                for (a = 0; a < req.body.ItemProduto.length; a++) {
                     ItensOrcamento.create({
                         idOrcamento: res.dataValues.id,
                         idFornecedor: req.body.DescricaoForn[i],
@@ -197,9 +281,22 @@ app.post('/cad-Orcamento', async function (req, res) {
                         qtdProduto: req.body.ItemQuantidade[a],
                     }
                     ).catch(function (erro) {
-                        res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
+                       // res.send("Erro: Orcamento não foi cadastrado com sucesso!" + erro)
                     })
                 }
+            }).then(async function(){
+                const { Op } = require("sequelize");
+            
+                 const Forn = await Fornecedor.findAll({
+                    where: {
+                        [Op.and]: [
+                            { id:  req.body.DescricaoForn[i] }
+                        ]
+                    },
+                    raw: true
+                });
+                forn = Forn[0];
+                SendEmail(forn.email,"http://localhost:8080/resp-Orcamento?o="+idOrcamento+"&f="+ req.body.DescricaoForn[i]);
             })
         }
     })

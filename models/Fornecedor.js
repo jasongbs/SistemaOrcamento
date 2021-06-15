@@ -18,6 +18,9 @@ const Fornecedor = db.sequelize.define('Fornecedor', {
     telContato: {
         type: db.Sequelize.STRING
     },
+    email: {
+        type: db.Sequelize.STRING
+    },
     endereco: {
         type: db.Sequelize.STRING
     },
@@ -31,6 +34,6 @@ const Fornecedor = db.sequelize.define('Fornecedor', {
 })
 
 //Criar a tabela
-//Fornecedor.sync({force: true})
+//Fornecedor.sync({alter: true})
 
 module.exports = Fornecedor

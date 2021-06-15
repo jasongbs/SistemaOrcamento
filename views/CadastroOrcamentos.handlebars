@@ -11,36 +11,46 @@
 
 
 <style>
-  H1 {
-    margin-left: 5%;
-  }
+
+
+
+  h1 {
+        text-align: center
+    }
 
   #form {
-    padding: 30px;
-  }
+        padding-left: 2%;
+        padding-right: 2%;
+    }
 
   #addItem {
     margin-right: 0;
   }
 
-  .select {
-    width: 400px;
-    height: 30px;
+ 
+  .submit-button {
+  
+    width: 170px;
+    height: 40px;
+    background-color: #2eb85c;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    transition: all 0.5s
   }
 
-  #cadastrar {
-    position: absolute;
-
-    right: 5%;
+  .submit-button:hover {
+    opacity: 0.7
   }
 
 
+ 
 </style>
 
 
 <script>
 
-  
+
 
   $(document).ready(function () {
 
@@ -78,25 +88,22 @@
 
 <h1>Cadastro de Orçamento</h1>
 
-
 <form id='form' action="/cad-Orcamento" method="POST">
   <div class="form-row">
-   
+
     <div class="col-md-5 mb-4">
       <label for="validationCustom02">Nome Fornecedor</label>
       <br>
-      <select for="validationCustom02"  title="Selecione o Fornecedor" data-live-search="true" name="DescricaoForn" id="descricaoForn"
-        class="selectpicker form-control" data-width="75%" data-dropup-auto="false" data-selected-text-format="count > 2" multiple required>
+      <select for="validationCustom02" title="Selecione o Fornecedor" data-live-search="true" name="DescricaoForn"
+        id="descricaoForn" class="selectpicker form-control" data-width="75%" data-dropup-auto="false"
+        data-selected-text-format="count > 2" multiple required>
         {{#each dados.forn}}
         <option value={{id}} data-subtext="{{cnpj}} - {{atividades}}">{{nomeFantasia}}</option>
         {{/each}}
       </select>
-   
+
     </div>
-
   </div>
-
-
 
   <div class="form-row">
     <div class="col-md-6 mb-3">
@@ -132,9 +139,8 @@
 
   </table>
 
-  <br>
   <hr>
-  <button type="submit" id="cadastrar" class="btn btn-info">Cadastrar</button>
+  <button type="submit" id="cadastrar" class="btn btn-info submit-button">Cadastrar</button>
   </div>
 </form>
 
