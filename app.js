@@ -27,13 +27,13 @@ async function SendEmail(Sendfrom,link) {
     var transport = nodemailer.createTransport({
         service: "Gmail",
         auth: {
-            user: "jason.santos585@al.unieduk.com.br",
-            pass: "47332284812"
+            user: "email@email.com",
+            pass: "senha"
         }
     });
 
     let message = await transport.sendMail({
-        from: '"Contato DEVMIND" <jasongbds@gmail.com>',
+        from: Sendfrom,
         to: Sendfrom,
         subject: "Chegou um novo orçamento para você!",
         html: "Olá caro fornecedor, <br>Estamos enviando uma solicitação para preenchimento de cotação de produtos. <br><p>Link para responder o orçamento: "+link+"<p>",
